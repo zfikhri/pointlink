@@ -1,619 +1,749 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pointlink Ventures | Everlasting Impressions</title>
-
-  <!-- GSAP & ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-  <!-- Lenis -->
-  <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Syne', 'sans-serif'],
-          },
-          colors: {
-            dark: '#050505',
-            light: '#F5F5F5',
-            accent: '#2563EB',
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pointlink Ventures | Everlasting Impressions</title>
+    
+    <!-- GSAP & Lenis untuk Animasi Premium -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Premium: Syne untuk Heading, Inter untuk Body -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        light: '#F5F5F5',
+                        accent: '#2563EB', // Electric Blue
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
+    
+    <style>
+        body {
+            background-color: #050505;
+            color: #F5F5F5;
+            overflow-x: hidden;
+            margin: 0;
+        }
 
-  <style>
-    body{
-      background-color:#050505;
-      color:#F5F5F5;
-      overflow-x:hidden;
-      margin:0;
-    }
+        /* Custom Cursor */
+        @media (pointer: fine) {
+            body { cursor: none; }
+        }
+        .cursor-dot {
+            position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+            background-color: white; border-radius: 50%; z-index: 10000;
+            pointer-events: none; transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+        .cursor-ring {
+            position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
+            z-index: 9999; pointer-events: none; transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s, mix-blend-mode 0.3s;
+            mix-blend-mode: difference;
+        }
+        .cursor-ring.active {
+            width: 60px; height: 60px;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border-color: transparent;
+        }
 
-    .noise{
-      position:fixed; inset:0;
-      pointer-events:none;
-      z-index:9999;
-      opacity:0.04;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
+        /* Teks Gradien */
+        .text-gradient {
+            background: linear-gradient(180deg, #FFFFFF 0%, #71717A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    @media (pointer:fine){ body{cursor:none;} }
-    .cursor-dot{
-      position:fixed; top:0; left:0; width:6px; height:6px;
-      background:#fff; border-radius:50%;
-      z-index:10000; pointer-events:none; transform:translate(-50%,-50%);
-    }
-    .cursor-ring{
-      position:fixed; top:0; left:0; width:36px; height:36px;
-      border:1px solid rgba(255,255,255,0.4); border-radius:50%;
-      z-index:9999; pointer-events:none; transform:translate(-50%,-50%);
-      transition:width .3s,height .3s,background-color .3s;
-    }
-    .cursor-ring.active{
-      width:60px; height:60px;
-      background:rgba(255,255,255,0.1);
-      backdrop-filter:blur(4px);
-      border-color:transparent;
-    }
+        /* Marquee Animation */
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
-    .text-gradient{
-      background:linear-gradient(180deg,#fff 0%,#71717A 100%);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
+        /* Sembunyikan scrollbar untuk bahagian horizontal */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .marquee-track{display:flex;width:max-content;animation:marquee 20s linear infinite;}
-    @keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+        /* --- ELEMEN SHOW-OFF BARU --- */
+        /* Preloader */
+        #preloader {
+            position: fixed; inset: 0; background-color: #050505; z-index: 100000;
+            display: flex; justify-content: flex-end; align-items: flex-end; padding: clamp(2rem, 5vw, 4rem);
+        }
+        .counter { font-family: 'Syne', sans-serif; font-size: clamp(4rem, 10vw, 8rem); font-weight: 800; line-height: 1; color: white; }
+        
+        /* Portfolio Reveal */
+        .portfolio-item { border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: padding 0.3s; }
+        @media (min-width: 768px) {
+            .portfolio-item:hover { padding-left: 2rem; border-bottom-color: #2563EB; }
+        }
+        .portfolio-hover-img {
+            position: fixed; top: 0; left: 0; width: 350px; height: 450px;
+            background-size: cover; background-position: center; pointer-events: none;
+            opacity: 0; transform: scale(0.8) translate(-50%, -50%); z-index: 40;
+            border-radius: 1rem; overflow: hidden;
+            display: none; /* Disembunyikan pada peranti mudah alih */
+        }
+        @media (min-width: 768px) {
+            .portfolio-hover-img { display: block; }
+        }
+        
+        /* Magnetic Button */
+        .magnetic-wrap { display: inline-block; padding: 1.5rem; cursor: pointer; margin: -1.5rem; }
+        .magnetic-btn { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
 
-    .no-scrollbar::-webkit-scrollbar{display:none;}
-    .no-scrollbar{-ms-overflow-style:none; scrollbar-width:none;}
+        /* Client Logo Marquee */
+        .client-marquee-wrapper {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+        .client-track {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            animation: client-scroll 40s linear infinite;
+        }
+        .client-track.reverse {
+            animation-direction: reverse;
+            animation-duration: 45s;
+        }
+        @keyframes client-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .client-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin: 0 3rem;
+            filter: grayscale(100%) opacity(40%) brightness(200%);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .client-logo:hover {
+            filter: grayscale(0%) opacity(100%) brightness(100%);
+            transform: scale(1.15);
+        }
 
-    /* Preloader (FIX: responsive padding proper) */
-    #preloader{
-      position:fixed; inset:0; background:#050505; z-index:100000;
-      display:flex; justify-content:flex-end; align-items:flex-end;
-      padding:2rem;
-    }
-    @media (min-width: 768px){
-      #preloader{ padding:4rem; }
-    }
-    .counter{
-      font-family:'Syne',sans-serif;
-      font-size:clamp(4rem,10vw,8rem);
-      font-weight:800; line-height:1; color:#fff;
-    }
-
-    .portfolio-item{border-bottom:1px solid rgba(255,255,255,0.1); cursor:pointer; transition:padding .3s;}
-    @media (min-width:768px){
-      .portfolio-item:hover{padding-left:2rem; border-bottom-color:#2563EB;}
-    }
-    .portfolio-hover-img{
-      position:fixed; top:0; left:0; width:350px; height:450px;
-      background-size:cover; background-position:center; pointer-events:none;
-      opacity:0; transform:scale(0.8) translate(-50%,-50%); z-index:40;
-      border-radius:1rem; overflow:hidden; display:none;
-    }
-    @media (min-width:768px){ .portfolio-hover-img{display:block;} }
-
-    .magnetic-wrap{display:inline-block; padding:1.5rem; cursor:pointer; margin:-1.5rem;}
-    .magnetic-btn{transition:transform .3s cubic-bezier(.175,.885,.32,1.275); display:inline-block;}
-
-    .client-marquee-wrapper{
-      display:flex; overflow:hidden; width:100%;
-      mask-image:linear-gradient(to right,transparent,black 15%,black 85%,transparent);
-      -webkit-mask-image:linear-gradient(to right,transparent,black 15%,black 85%,transparent);
-    }
-    .client-track{display:flex; align-items:center; width:max-content; animation:client-scroll 40s linear infinite;}
-    .client-track.reverse{animation-direction:reverse; animation-duration:45s;}
-    @keyframes client-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-    .client-logo{
-      width:100px; height:100px; object-fit:contain; margin:0 3rem;
-      filter:grayscale(100%) opacity(40%) brightness(200%);
-      transition:all .5s cubic-bezier(.175,.885,.32,1.275);
-      cursor:pointer;
-    }
-    .client-logo:hover{filter:grayscale(0%) opacity(100%) brightness(100%); transform:scale(1.15);}
-
-    /* fallback if globe fails */
-    .globe-fallback{
-      position:absolute; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      pointer-events:none;
-      opacity:.25;
-      background:radial-gradient(circle at 50% 50%, rgba(37,99,235,.35), transparent 55%);
-      filter:blur(0px);
-    }
-  </style>
+        /* Showreel Button & Modal */
+        .play-reel-btn {
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex; justify-content: center; align-items: center;
+            position: absolute; right: 10%; top: 60%;
+            backdrop-filter: blur(10px);
+            transition: background-color 0.3s, border-color 0.3s;
+            z-index: 20;
+        }
+        .play-reel-btn:hover { background-color: #FFFFFF; color: #050505; border-color: #FFFFFF; }
+        .play-reel-text { font-family: 'Syne', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; text-align: center; }
+        
+        #video-modal {
+            position: fixed; inset: 0; z-index: 100000; background-color: #050505;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; visibility: hidden;
+            transform: scale(0.95) translateY(20px);
+        }
+        #video-modal.active { opacity: 1; pointer-events: auto; visibility: visible; transform: scale(1) translateY(0); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .close-video { position: absolute; top: 2rem; right: 2rem; width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; }
+        .close-video:hover { background: white; color: black; transform: rotate(90deg); }
+    </style>
 </head>
-
 <body class="antialiased selection:bg-accent selection:text-white">
-  <!-- Preloader -->
-  <div id="preloader">
-    <div class="counter" id="counter">0%</div>
-  </div>
 
-  <div class="noise"></div>
-
-  <!-- Custom Cursor -->
-  <div class="cursor-dot hidden md:block"></div>
-  <div class="cursor-ring hidden md:block"></div>
-
-  <!-- Navbar -->
-  <nav class="fixed w-full z-50 mix-blend-difference px-6 py-6 flex justify-between items-center">
-    <div class="font-display font-bold text-2xl tracking-tighter">POINTLINK.</div>
-    <div class="magnetic-wrap">
-      <button class="magnetic-btn font-sans text-sm tracking-widest uppercase hover:opacity-70 transition-opacity interactive">Menu</button>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
-    <div class="absolute inset-0 flex justify-center items-center opacity-80 z-0 pointer-events-none">
- <canvas id="cobe-canvas" style="width: min(70vh, 680px); height: min(70vh, 680px);"></canvas>
-      <div class="globe-fallback" id="globe-fallback" aria-hidden="true"></div>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="counter" id="counter">0%</div>
     </div>
 
-    <div class="z-10 text-center px-4 mix-blend-difference w-full max-w-6xl mx-auto">
-      <p class="hero-elem font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-gray-300 mb-6">
-        Conceptualizing Dreams Through Knowledge &amp; Experience
-      </p>
-      <h1 class="hero-elem font-display text-4xl sm:text-6xl md:text-8xl lg:text-[9rem] leading-[0.9] font-bold tracking-tighter text-gradient">
-        EVERLASTING<br/>IMPRESSIONS.
-      </h1>
-    </div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-ring hidden md:block"></div>
 
-    <div class="absolute bottom-10 left-6 z-10 hero-elem mix-blend-difference">
-      <p class="text-xs uppercase tracking-widest text-gray-400">Scroll Down <br/>To Explore</p>
-    </div>
-  </section>
-
-  <!-- Scrub text -->
-  <section class="py-24 md:py-48 px-6 bg-dark">
-    <div class="max-w-5xl mx-auto">
-      <h2 id="scrub-text" class="font-display text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-white/20">
-        WE AT POINTLINK VENTURES ARE DEDICATED TO CONCEPTUALIZING YOUR DREAMS, DELIVERING TURN-KEY EVENT AND CREATIVE SOLUTIONS THAT LEAVE EVERLASTING IMPRESSIONS.
-      </h2>
-    </div>
-  </section>
-
-  <!-- Horizontal section -->
-  <section id="horizontal-section" class="relative h-screen bg-zinc-900 flex items-center overflow-hidden">
-    <div class="absolute top-24 md:top-12 left-6 md:left-12 z-10">
-      <h3 class="font-display text-3xl md:text-4xl font-bold text-white">Our Core<br/>Expertise.</h3>
-    </div>
-
-    <div class="horizontal-track flex gap-4 md:gap-8 px-6 md:px-32 w-max items-center h-full pt-32 md:pt-16">
-      <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
-        <div class="absolute inset-0 bg-accent/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-        <div class="relative z-10">
-          <span class="text-accent font-mono text-sm">01</span>
-          <h4 class="font-display text-3xl mt-4 mb-2">Event Management</h4>
-          <p class="text-gray-400 text-sm leading-relaxed">Turn-key live event solutions. From conceptualization, production, and technical management to actual day execution.</p>
+    <!-- Navbar Minimalis -->
+    <nav class="fixed w-full z-50 mix-blend-difference px-6 py-6 flex justify-between items-center">
+        <div class="font-display font-bold text-2xl tracking-tighter">POINTLINK.</div>
+        <div class="magnetic-wrap">
+            <button class="magnetic-btn font-sans text-sm tracking-widest uppercase hover:opacity-70 transition-opacity interactive">Menu</button>
         </div>
-        <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
-          <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </div>
-      </div>
+    </nav>
 
-      <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
-        <div class="absolute inset-0 bg-purple-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-        <div class="relative z-10">
-          <span class="text-purple-500 font-mono text-sm">02</span>
-          <h4 class="font-display text-3xl mt-4 mb-2">Video Production</h4>
-          <p class="text-gray-400 text-sm leading-relaxed">Visual quality that tells a story. We produce corporate, documentary, and commercial video content that creates an emotional connection.</p>
+    <!-- 1. Hero Section dengan Animated Globe -->
+    <section class="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
+        <!-- Canvas untuk Globe COBE -->
+        <div class="absolute inset-0 flex justify-center items-center opacity-80 z-0 pointer-events-none">
+            <canvas id="cobe-canvas" style="width: 800px; height: 800px; max-width: 150vw; max-height: 150vw;"></canvas>
         </div>
-        <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
-          <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </div>
-      </div>
-
-      <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
-        <div class="absolute inset-0 bg-emerald-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-        <div class="relative z-10">
-          <span class="text-emerald-500 font-mono text-sm">03</span>
-          <h4 class="font-display text-3xl mt-4 mb-2">Digital &amp; Interior Design</h4>
-          <p class="text-gray-400 text-sm leading-relaxed">Comprehensive creative services. From corporate profile development and web interface design to complete interior design layouts.</p>
-        </div>
-        <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
-          <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </div>
-      </div>
-
-      <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
-        <div class="absolute inset-0 bg-orange-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-        <div class="relative z-10">
-          <span class="text-orange-500 font-mono text-sm">04</span>
-          <h4 class="font-display text-3xl mt-4 mb-2">Quality Printing</h4>
-          <p class="text-gray-400 text-sm leading-relaxed">Expertise in high-quality printing solutions and general trading, ensuring your physical materials match your corporate image.</p>
-        </div>
-        <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
-          <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Portfolio -->
-  <section class="py-24 md:py-32 px-6 bg-dark relative" id="portfolio-section">
-    <div class="max-w-6xl mx-auto">
-      <h3 class="font-display text-2xl md:text-4xl font-bold text-white mb-8 md:mb-12">Event Milestones.</h3>
-
-      <div class="flex flex-col border-t border-white/10">
-        <div class="portfolio-item py-6 md:py-12 flex flex-col md:flex-row justify-center md:justify-between items-start md:items-center group interactive"
-             data-image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop">
-          <h4 class="font-display text-3xl md:text-7xl font-bold text-white group-hover:text-accent transition-colors mb-2 md:mb-0">GOVERNMENT EVENTS.</h4>
-          <span class="text-xs md:text-sm tracking-widest uppercase text-gray-500">2025</span>
+        
+        <div class="z-10 text-center px-4 mix-blend-difference w-full max-w-6xl mx-auto">
+            <p class="hero-elem font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-gray-300 mb-6">Conceptualizing Dreams Through Knowledge & Experience</p>
+            <h1 class="hero-elem font-display text-4xl sm:text-6xl md:text-8xl lg:text-[9rem] leading-[0.9] font-bold tracking-tighter text-gradient">
+                EVERLASTING<br/>IMPRESSIONS.
+            </h1>
         </div>
 
-        <div class="portfolio-item py-6 md:py-12 flex flex-col md:flex-row justify-center md:justify-between items-start md:items-center group interactive"
-             data-image="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1000&auto=format&fit=crop">
-          <h4 class="font-display text-3xl md:text-7xl font-bold text-white group-hover:text-accent transition-colors mb-2 md:mb-0">CORPORATE GALAS.</h4>
-          <span class="text-xs md:text-sm tracking-widest uppercase text-gray-500">2024</span>
+        <!-- Magnetic Play Showreel Button -->
+        <div class="hidden md:block hero-elem magnetic-wrap absolute right-[10%] top-[55%]">
+            <div class="magnetic-btn play-reel-btn interactive cursor-pointer" id="open-video">
+                <div class="play-reel-text">Play<br/>Showreel</div>
+            </div>
         </div>
 
-        <div class="portfolio-item py-6 md:py-12 flex flex-col md:flex-row justify-center md:justify-between items-start md:items-center group interactive"
-             data-image="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop">
-          <h4 class="font-display text-3xl md:text-7xl font-bold text-white group-hover:text-accent transition-colors mb-2 md:mb-0">BRAND LAUNCHES.</h4>
-          <span class="text-xs md:text-sm tracking-widest uppercase text-gray-500">2023</span>
+        <div class="absolute bottom-10 left-6 z-10 hero-elem mix-blend-difference">
+            <p class="text-xs uppercase tracking-widest text-gray-400">Scroll Down <br/>To Explore</p>
         </div>
-      </div>
+    </section>
+
+    <!-- 2. Scroll Scrub Text Reveal -->
+    <section class="py-24 md:py-48 px-6 bg-dark">
+        <div class="max-w-5xl mx-auto">
+            <h2 id="scrub-text" class="font-display text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight text-white/20">
+                WE AT POINTLINK VENTURES ARE DEDICATED TO CONCEPTUALIZING YOUR DREAMS, DELIVERING TURN-KEY EVENT AND CREATIVE SOLUTIONS THAT LEAVE EVERLASTING IMPRESSIONS.
+            </h2>
+        </div>
+    </section>
+
+    <!-- 3. Horizontal Scroll Section (Wow Effect) -->
+    <section id="horizontal-section" class="relative h-screen bg-zinc-900 flex items-center overflow-hidden">
+        <div class="absolute top-24 md:top-12 left-6 md:left-12 z-10">
+            <h3 class="font-display text-3xl md:text-4xl font-bold text-white">Our Core<br/>Expertise.</h3>
+        </div>
+
+        <!-- Wrapper yang akan ditatal secara mendatar oleh GSAP -->
+        <div class="horizontal-track flex gap-4 md:gap-8 px-6 md:px-32 w-max items-center h-full pt-32 md:pt-16">
+            
+            <!-- Card 1 -->
+            <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
+                <div class="absolute inset-0 bg-accent/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
+                <div class="relative z-10">
+                    <span class="text-accent font-mono text-sm">01</span>
+                    <h4 class="font-display text-3xl mt-4 mb-2">Event Management</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Turn-key live event solutions. From conceptualization, production, and technical management to actual day execution.</p>
+                </div>
+                <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
+                    <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
+                <div class="absolute inset-0 bg-purple-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
+                <div class="relative z-10">
+                    <span class="text-purple-500 font-mono text-sm">02</span>
+                    <h4 class="font-display text-3xl mt-4 mb-2">Video Production</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Visual quality that tells a story. We produce corporate, documentary, and commercial video content that creates an emotional connection.</p>
+                </div>
+                <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
+                    <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
+                <div class="absolute inset-0 bg-emerald-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
+                <div class="relative z-10">
+                    <span class="text-emerald-500 font-mono text-sm">03</span>
+                    <h4 class="font-display text-3xl mt-4 mb-2">Digital & Interior Design</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Comprehensive creative services. From corporate profile development and web interface design to complete interior design layouts.</p>
+                </div>
+                <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
+                    <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="w-[85vw] md:w-[500px] h-[60vh] md:h-[500px] bg-dark rounded-2xl p-8 flex flex-col justify-between border border-white/10 shrink-0 group interactive relative overflow-hidden">
+                <div class="absolute inset-0 bg-orange-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
+                <div class="relative z-10">
+                    <span class="text-orange-500 font-mono text-sm">04</span>
+                    <h4 class="font-display text-3xl mt-4 mb-2">Quality Printing</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Expertise in high-quality printing solutions and general trading, ensuring your physical materials match your corporate image.</p>
+                </div>
+                <div class="relative z-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors">
+                    <svg class="w-5 h-5 transform -rotate-45 group-hover:rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3.5. Portfolio List Reveal (Show-off Effect) -->
+    <section class="py-24 md:py-32 px-6 bg-dark relative" id="portfolio-section">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="font-display text-2xl md:text-4xl font-bold text-white mb-8 md:mb-12">Event Milestones.</h3>
+            
+            <div class="flex flex-col border-t border-white/10">
+                <div class="portfolio-item py-6 md:py-12 flex flex-col md:flex-row justify-center md:justify-between items-start md:items-center group interactive" data-image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop">
+                    <h4 class="font-display text-3xl md:text-7xl font-bold text-white group-hover:text-accent transition-colors mb-2 md:mb-0">GOVERNMENT EVENTS.</h4>
+                    <span class="text-xs md:text-sm tracking-widest uppercase text-gray-500">2025</span>
+                </div>
+                <div class="portfolio-item py-6 md:py-12 flex flex-col md:flex-row justify-center md:justify-between items-start md:items-center group interactive" data-image="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1000&auto=format&fit=crop">
+                    <h4 class="font-display text-3xl md:text-7xl font-bold text-white group-hover:text-accent transition-colors mb-2 md:mb-0">CORPORATE GALAS.</h4>
+                    <span class="text-xs md:text-sm tracking-widest uppercase text-gray-500">2024</span>
+                </div>
+                <div class="portfolio-item py-6 md:py-12 flex flex-col md:flex-row justify-center md:justify-between items-start md:items-center group interactive" data-image="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop">
+                    <h4 class="font-display text-3xl md:text-7xl font-bold text-white group-hover:text-accent transition-colors mb-2 md:mb-0">BRAND LAUNCHES.</h4>
+                    <span class="text-xs md:text-sm tracking-widest uppercase text-gray-500">2023</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Image for Portfolio -->
+        <div class="portfolio-hover-img" id="portfolio-hover-img"></div>
+    </section>
+
+    <!-- 3.6. Interactive Stats Section -->
+    <section class="py-24 px-6 bg-zinc-900 border-y border-white/10">
+        <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center" id="stats-section">
+            <div>
+                <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="10">0</span>+</h4>
+                <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Years Experience</p>
+            </div>
+            <div>
+                <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="500">0</span>+</h4>
+                <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Projects Completed</p>
+            </div>
+            <div>
+                <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="100">0</span>+</h4>
+                <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Happy Clients</p>
+            </div>
+            <div>
+                <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="50">0</span>+</h4>
+                <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Strategic Partners</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3.7. Client Logos Marquee Section -->
+    <section class="py-24 bg-dark relative z-10 border-b border-white/10 overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6 mb-16 text-center reveal-elem">
+            <p class="text-xs tracking-widest uppercase text-gray-500 mb-4">Trusted By Leading Organizations</p>
+            <h3 class="font-display text-3xl md:text-5xl font-bold text-white">Our Client <span class="text-accent">Network.</span></h3>
+        </div>
+
+        <!-- Track 1 (Moving Left) -->
+        <div class="client-marquee-wrapper mb-12">
+            <div class="client-track interactive">
+                <!-- Original Set -->
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/kkm.png" alt="KKM" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/kementerian-belia-dan-sukan.png" alt="KBS" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/sarawak.png" alt="Kerajaan Sarawak" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/NRE.png" alt="NRE" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/perbadanan-taman-negeri-perak.png" alt="Taman Negeri Perak" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/jmg.png" alt="JMG" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/national-geoparks.png" alt="National Geoparks" class="client-logo">
+                <!-- Duplicate for infinite loop effect -->
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/kkm.png" alt="KKM" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/kementerian-belia-dan-sukan.png" alt="KBS" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/sarawak.png" alt="Kerajaan Sarawak" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/NRE.png" alt="NRE" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/perbadanan-taman-negeri-perak.png" alt="Taman Negeri Perak" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/jmg.png" alt="JMG" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/national-geoparks.png" alt="National Geoparks" class="client-logo">
+            </div>
+        </div>
+
+        <!-- Track 2 (Moving Right) -->
+        <div class="client-marquee-wrapper">
+            <div class="client-track reverse interactive">
+                <!-- Original Set -->
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/sime-darby.png" alt="Sime Darby" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/perhutanan.png" alt="Jabatan Perhutanan" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/majlis-agama-islam-selangor.png" alt="MAIS" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/universiti-pertahanan-nasional-malaysia.png" alt="UPNM" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/pahang.png" alt="Kerajaan Pahang" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/johor.png" alt="Kerajaan Johor" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/jata-selangor.png" alt="Kerajaan Selangor" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/kedah.png" alt="Kerajaan Kedah" class="client-logo">
+                <!-- Duplicate for infinite loop effect -->
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/sime-darby.png" alt="Sime Darby" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/perhutanan.png" alt="Jabatan Perhutanan" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/majlis-agama-islam-selangor.png" alt="MAIS" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/universiti-pertahanan-nasional-malaysia.png" alt="UPNM" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/pahang.png" alt="Kerajaan Pahang" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/johor.png" alt="Kerajaan Johor" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/jata-selangor.png" alt="Kerajaan Selangor" class="client-logo">
+                <img src="https://pointlink.my/wp-content/uploads/2019/03/kedah.png" alt="Kerajaan Kedah" class="client-logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Infinite Marquee Divider -->
+    <section class="py-12 bg-accent overflow-hidden rotate-[-2deg] scale-105 my-24 z-20 relative mix-blend-difference">
+        <div class="marquee-track">
+            <!-- Diulang 2 kali untuk efek infinite -->
+            <div class="flex items-center space-x-8 px-4">
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Pointlink</span>
+                <span class="text-dark">✦</span>
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Events</span>
+                <span class="text-dark">✦</span>
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Creative</span>
+                <span class="text-dark">✦</span>
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Printing</span>
+                <span class="text-dark">✦</span>
+            </div>
+            <div class="flex items-center space-x-8 px-4">
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Pointlink</span>
+                <span class="text-dark">✦</span>
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Events</span>
+                <span class="text-dark">✦</span>
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Creative</span>
+                <span class="text-dark">✦</span>
+                <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Printing</span>
+                <span class="text-dark">✦</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Big Footer CTA -->
+    <footer class="min-h-[80vh] flex flex-col items-center justify-center px-6 relative overflow-hidden bg-dark">
+        <div class="text-center z-10 interactive" id="footer-cta">
+            <p class="text-gray-400 tracking-widest uppercase text-sm mb-4">Start Your Project</p>
+            <h2 class="font-display text-6xl md:text-[8rem] font-bold leading-none tracking-tighter hover:text-accent transition-colors duration-500 cursor-pointer">
+                CONTACT<br/>US.
+            </h2>
+        </div>
+        
+        <div class="absolute bottom-6 w-full px-6 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-gray-600 font-mono z-10">
+            <p>&copy; 2026 POINTLINK VENTURES SDN BHD (1196525-U)</p>
+            <p>BANDAR BARU BANGI, SELANGOR</p>
+        </div>
+        
+        <!-- Background glow effect in footer -->
+        <div class="absolute inset-0 bg-accent/5 filter blur-[150px] rounded-full transform scale-150 pointer-events-none"></div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div id="video-modal">
+        <div class="close-video interactive" id="close-video">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </div>
+        <div class="w-full max-w-5xl aspect-video bg-zinc-900 overflow-hidden relative border border-white/10 rounded-2xl shadow-2xl shadow-accent/20">
+            <!-- Sila gantikan iframe ini dengan URL video sebenar Pointlink Vimeo/Youtube -->
+            <iframe id="youtube-player" class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0&showinfo=0" title="Showreel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 
-    <div class="portfolio-hover-img" id="portfolio-hover-img"></div>
-  </section>
+    <!-- Module script for COBE Globe -->
+    <script type="module">
+        import createGlobe from 'https://cdn.skypack.dev/cobe';
 
-  <!-- Stats -->
-  <section class="py-24 px-6 bg-zinc-900 border-y border-white/10">
-    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center" id="stats-section">
-      <div>
-        <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="10">0</span>+</h4>
-        <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Years Experience</p>
-      </div>
-      <div>
-        <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="500">0</span>+</h4>
-        <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Projects Completed</p>
-      </div>
-      <div>
-        <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="100">0</span>+</h4>
-        <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Happy Clients</p>
-      </div>
-      <div>
-        <h4 class="font-display text-5xl md:text-7xl font-bold text-white mb-2"><span class="stat-counter" data-target="50">0</span>+</h4>
-        <p class="text-xs md:text-sm tracking-widest uppercase text-gray-400">Strategic Partners</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Clients -->
-  <section class="py-24 bg-dark relative z-10 border-b border-white/10 overflow-hidden">
-    <div class="max-w-6xl mx-auto px-6 mb-16 text-center reveal-elem">
-      <p class="text-xs tracking-widest uppercase text-gray-500 mb-4">Trusted By Leading Organizations</p>
-      <h3 class="font-display text-3xl md:text-5xl font-bold text-white">Our Client <span class="text-accent">Network.</span></h3>
-    </div>
-
-    <div class="client-marquee-wrapper mb-12">
-      <div class="client-track interactive">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/kkm.png" alt="KKM" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/kementerian-belia-dan-sukan.png" alt="KBS" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/sarawak.png" alt="Kerajaan Sarawak" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/NRE.png" alt="NRE" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/perbadanan-taman-negeri-perak.png" alt="Taman Negeri Perak" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/jmg.png" alt="JMG" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/national-geoparks.png" alt="National Geoparks" class="client-logo">
-
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/kkm.png" alt="KKM" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/kementerian-belia-dan-sukan.png" alt="KBS" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/sarawak.png" alt="Kerajaan Sarawak" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/NRE.png" alt="NRE" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/perbadanan-taman-negeri-perak.png" alt="Taman Negeri Perak" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/jmg.png" alt="JMG" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/national-geoparks.png" alt="National Geoparks" class="client-logo">
-      </div>
-    </div>
-
-    <div class="client-marquee-wrapper">
-      <div class="client-track reverse interactive">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/sime-darby.png" alt="Sime Darby" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/perhutanan.png" alt="Jabatan Perhutanan" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/majlis-agama-islam-selangor.png" alt="MAIS" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/universiti-pertahanan-nasional-malaysia.png" alt="UPNM" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/pahang.png" alt="Kerajaan Pahang" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/johor.png" alt="Kerajaan Johor" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/jata-selangor.png" alt="Kerajaan Selangor" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/kedah.png" alt="Kerajaan Kedah" class="client-logo">
-
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/sime-darby.png" alt="Sime Darby" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/perhutanan.png" alt="Jabatan Perhutanan" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/majlis-agama-islam-selangor.png" alt="MAIS" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/universiti-pertahanan-nasional-malaysia.png" alt="UPNM" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/pahang.png" alt="Kerajaan Pahang" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/johor.png" alt="Kerajaan Johor" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/jata-selangor.png" alt="Kerajaan Selangor" class="client-logo">
-        <img src="https://pointlink.my/wp-content/uploads/2019/03/kedah.png" alt="Kerajaan Kedah" class="client-logo">
-      </div>
-    </div>
-  </section>
-
-  <!-- Marquee Divider -->
-  <section class="py-12 bg-accent overflow-hidden rotate-[-2deg] scale-105 my-24 z-20 relative mix-blend-difference">
-    <div class="marquee-track">
-      <div class="flex items-center space-x-8 px-4">
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Pointlink</span>
-        <span class="text-dark">✦</span>
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Events</span>
-        <span class="text-dark">✦</span>
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Creative</span>
-        <span class="text-dark">✦</span>
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Printing</span>
-        <span class="text-dark">✦</span>
-      </div>
-      <div class="flex items-center space-x-8 px-4">
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Pointlink</span>
-        <span class="text-dark">✦</span>
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Events</span>
-        <span class="text-dark">✦</span>
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Creative</span>
-        <span class="text-dark">✦</span>
-        <span class="font-display text-4xl md:text-6xl font-bold text-dark uppercase">Printing</span>
-        <span class="text-dark">✦</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="min-h-[80vh] flex flex-col items-center justify-center px-6 relative overflow-hidden bg-dark">
-    <div class="text-center z-10 interactive" id="footer-cta">
-      <p class="text-gray-400 tracking-widest uppercase text-sm mb-4">Start Your Project</p>
-      <h2 class="font-display text-6xl md:text-[8rem] font-bold leading-none tracking-tighter hover:text-accent transition-colors duration-500 cursor-pointer">
-        CONTACT<br/>US.
-      </h2>
-    </div>
-
-    <div class="absolute bottom-6 w-full px-6 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-gray-600 font-mono z-10">
-      <p>&copy; 2026 POINTLINK VENTURES SDN BHD (1196525-U)</p>
-      <p>BANDAR BARU BANGI, SELANGOR</p>
-    </div>
-
-    <div class="absolute inset-0 bg-accent/5 filter blur-[150px] rounded-full transform scale-150 pointer-events-none"></div>
-  </footer>
-
-  <!-- COBE Globe (FIX: use esm.sh + safe fallback) -->
-  <script type="module">
-    import createGlobe from 'https://esm.sh/cobe@0.6.2';
-
-    const fallback = document.getElementById('globe-fallback');
-    let phi = 0;
-
-    try{
-      const canvas = document.getElementById("cobe-canvas");
-      const globe = createGlobe(canvas, {
-        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-        width: 800 * 2,
-        height: 800 * 2,
-        phi: 0,
-        theta: 0.2,
-        dark: 1,
-        diffuse: 1.2,
-        mapSamples: 16000,
-        mapBrightness: 6,
-        baseColor: [0.1, 0.1, 0.1],
-        markerColor: [0.145, 0.388, 0.925],
-        glowColor: [0.1, 0.2, 0.5],
-        markers: [
-          { location: [3.1412, 101.6865], size: 0.1 },
-          { location: [51.5074, -0.1278], size: 0.05 },
-          { location: [35.6762, 139.6503], size: 0.05 },
-        ],
-        onRender: (state) => {
-          state.phi = phi;
-          phi += 0.003;
-        },
-      });
-
-      // hide fallback glow once globe initializes
-      if (fallback) fallback.style.display = 'none';
-
-      window.addEventListener('mousemove', (e) => {
-        const y = (e.clientY / window.innerHeight - 0.5) * Math.PI * 0.5;
-        gsap.to(globe, { theta: y * 0.5, duration: 1, ease: "power2.out" });
-      });
-    }catch(err){
-      // If module fails (CSP / network), keep fallback glow visible
-      console.warn('Globe failed to load:', err);
-    }
-  </script>
-
-  <!-- Main Logic -->
-  <script>
-    // Lenis
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      smooth: true,
-      smoothTouch: false,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    // Cursor
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorRing = document.querySelector('.cursor-ring');
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      gsap.set(cursorDot, { x: mouseX, y: mouseY });
-    });
-
-    gsap.ticker.add(() => {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      gsap.set(cursorRing, { x: ringX, y: ringY });
-    });
-
-    document.querySelectorAll('.interactive, a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => cursorRing?.classList.add('active'));
-      el.addEventListener('mouseleave', () => cursorRing?.classList.remove('active'));
-    });
-
-    // GSAP
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Sync Lenis + ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-    gsap.ticker.lagSmoothing(0, 0);
-
-    // Preloader
-    const counterEl = document.getElementById("counter");
-    const counterObj = { value: 0 };
-    gsap.timeline()
-      .to(counterObj, {
-        value: 100,
-        duration: 2,
-        ease: "power2.inOut",
-        onUpdate: () => { counterEl.innerText = Math.round(counterObj.value) + "%"; }
-      })
-      .to("#preloader", { yPercent: -100, duration: 1, ease: "expo.inOut" }, "+=0.2")
-      .from(".hero-elem", { y: 50, opacity: 0, duration: 1.5, stagger: 0.2, ease: "expo.out" }, "-=0.5");
-
-    // Magnetic button
-    const magWrap = document.querySelector('.magnetic-wrap');
-    const magBtn = document.querySelector('.magnetic-btn');
-    if (magWrap && magBtn) {
-      magWrap.addEventListener('mousemove', (e) => {
-        const rect = magWrap.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
-        const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
-        gsap.to(magBtn, { x, y, duration: 0.3 });
-      });
-      magWrap.addEventListener('mouseleave', () => {
-        gsap.to(magBtn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
-      });
-    }
-
-    // Portfolio hover reveal
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
-    const hoverImg = document.getElementById('portfolio-hover-img');
-    const portfolioSection = document.getElementById('portfolio-section');
-    let imgX = 0, imgY = 0;
-
-    if (portfolioSection && hoverImg) {
-      portfolioSection.addEventListener('mousemove', (e) => {
-        imgX = e.clientX;
-        imgY = e.clientY;
-        gsap.to(hoverImg, { x: imgX, y: imgY, duration: 0.4, ease: "power2.out" });
-      });
-
-      portfolioItems.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-          const imgUrl = item.getAttribute('data-image');
-          hoverImg.style.backgroundImage = `url(${imgUrl})`;
-          gsap.to(hoverImg, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.5)" });
-          if (cursorRing) cursorRing.style.opacity = '0';
+        let phi = 0;
+        let canvas = document.getElementById("cobe-canvas");
+        
+        const globe = createGlobe(canvas, {
+            devicePixelRatio: 2,
+            width: 800 * 2,
+            height: 800 * 2,
+            phi: 0,
+            theta: 0.2,
+            dark: 1, // Dark mode globe
+            diffuse: 1.2,
+            mapSamples: 16000,
+            mapBrightness: 6,
+            baseColor: [0.1, 0.1, 0.1], // Dark gray base
+            markerColor: [0.145, 0.388, 0.925], // Blue markers
+            glowColor: [0.1, 0.2, 0.5], // Blue glow
+            markers: [
+                { location: [3.1412, 101.6865], size: 0.1 }, // Kuala Lumpur
+                { location: [51.5074, -0.1278], size: 0.05 }, // London
+                { location: [35.6762, 139.6503], size: 0.05 }, // Tokyo
+            ],
+            onRender: (state) => {
+                // Called on every animation frame.
+                // Rotate the globe continuously.
+                state.phi = phi;
+                phi += 0.003;
+            },
         });
-        item.addEventListener('mouseleave', () => {
-          gsap.to(hoverImg, { opacity: 0, scale: 0.8, duration: 0.3 });
-          if (cursorRing) cursorRing.style.opacity = '1';
-        });
-      });
-    }
 
-    // Stats counter
-    document.querySelectorAll('.stat-counter').forEach(counter => {
-      const target = parseInt(counter.getAttribute('data-target'), 10);
-      ScrollTrigger.create({
-        trigger: "#stats-section",
-        start: "top 80%",
-        once: true,
-        onEnter: () => {
-          gsap.to(counter, {
-            innerHTML: target,
-            duration: 2.5,
-            snap: { innerHTML: 1 },
-            ease: "power3.out"
-          });
+        // Add slight interactivity with mouse
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * Math.PI * 0.5;
+            const y = (e.clientY / window.innerHeight - 0.5) * Math.PI * 0.5;
+            // Smoothly interpolate theta and phi based on mouse
+            gsap.to(globe, { theta: y * 0.5, duration: 1, ease: "power2.out" });
+        });
+    </script>
+
+    <!-- Main Logic Script -->
+    <script>
+        // --- 1. Init Lenis (Smooth Scroll) ---
+        const lenis = new Lenis({
+            duration: 1.2, // Dikurangkan sikit supaya lebih ringan/laju
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true,
+            smoothTouch: false, // MATIKAN untuk mobile supaya skrol guna jari lebih natural (native scroll)
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
         }
-      });
-    });
+        requestAnimationFrame(raf);
 
-    // Scrub text
-    const scrubTextEl = document.getElementById("scrub-text");
-    const words = scrubTextEl.innerText.split(" ");
-    scrubTextEl.innerHTML = "";
-    words.forEach(word => {
-      const span = document.createElement("span");
-      span.innerText = word + " ";
-      span.style.opacity = "0.2";
-      scrubTextEl.appendChild(span);
-    });
+        // --- 2. Custom Cursor ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-    gsap.to(scrubTextEl.children, {
-      opacity: 1,
-      color: "#FFFFFF",
-      stagger: 0.1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: scrubTextEl,
-        start: "top 80%",
-        end: "bottom 40%",
-        scrub: true
-      }
-    });
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            gsap.set(cursorDot, { x: mouseX, y: mouseY });
+        });
 
-    // Horizontal scroll
-    const horizontalSection = document.getElementById("horizontal-section");
-    const track = document.querySelector(".horizontal-track");
+        gsap.ticker.add(() => {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            gsap.set(cursorRing, { x: ringX, y: ringY });
+        });
 
-    function getScrollAmount() {
-      const trackWidth = track.scrollWidth;
-      return -(trackWidth - window.innerWidth + 48);
-    }
+        // Efek hover untuk cursor
+        const interactives = document.querySelectorAll('.interactive, a, button');
+        interactives.forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('active'));
+        });
 
-    const tween = gsap.to(track, { x: getScrollAmount, ease: "none" });
+        // --- 3. GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Sync Lenis dengan GSAP
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0, 0);
 
-    ScrollTrigger.create({
-      trigger: horizontalSection,
-      start: "top top",
-      end: () => `+=${track.scrollWidth}`,
-      pin: true,
-      animation: tween,
-      scrub: true,
-      invalidateOnRefresh: true
-    });
+        // --- ELEMEN SHOW-OFF 5: 3D TILT EFFECT PADA KAD KEPAKARAN ---
+        const horizontalCards = document.querySelectorAll('.horizontal-track > div');
+        horizontalCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Kalkulasi sudut putaran
+                const rotateX = ((y - centerY) / centerY) * -15; // Max 15 degree
+                const rotateY = ((x - centerX) / centerX) * 15;
+                
+                gsap.to(card, {
+                    rotationX: rotateX,
+                    rotationY: rotateY,
+                    transformPerspective: 1000,
+                    ease: "power2.out",
+                    duration: 0.4
+                });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { rotationX: 0, rotationY: 0, ease: "elastic.out(1, 0.3)", duration: 1.2 });
+            });
+        });
 
-    // Footer zoom
-    gsap.from("#footer-cta", {
-      scale: 0.8,
-      opacity: 0,
-      scrollTrigger: {
-        trigger: "footer",
-        start: "top bottom",
-        end: "center center",
-        scrub: 1
-      }
-    });
-  </script>
+        // --- ELEMEN SHOW-OFF 6: VIDEO MODAL LOGIC ---
+        const openVideoBtn = document.getElementById('open-video');
+        const closeVideoBtn = document.getElementById('close-video');
+        const videoModal = document.getElementById('video-modal');
+        const ytPlayer = document.getElementById('youtube-player');
+
+        if (openVideoBtn && videoModal) {
+            openVideoBtn.addEventListener('click', () => {
+                videoModal.classList.add('active');
+                lenis.stop(); // Hentikan scroll bila modal terbuka
+                if(cursorRing) cursorRing.style.opacity = '0';
+            });
+
+            closeVideoBtn.addEventListener('click', () => {
+                videoModal.classList.remove('active');
+                lenis.start(); // Sambung semula scroll
+                if(cursorRing) cursorRing.style.opacity = '1';
+                
+                // Berhenti video bila ditutup (Menggunakan postMessage API YouTube)
+                ytPlayer.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            });
+        }
+
+        // --- ELEMEN SHOW-OFF 1: PRELOADER & HERO ANIMATION ---
+        const tlPreloader = gsap.timeline();
+        const counterEl = document.getElementById("counter");
+        
+        let counterObj = { value: 0 };
+        tlPreloader.to(counterObj, {
+            value: 100,
+            duration: 2,
+            ease: "power2.inOut",
+            onUpdate: () => {
+                counterEl.innerText = Math.round(counterObj.value) + "%";
+            }
+        })
+        .to("#preloader", {
+            yPercent: -100,
+            duration: 1,
+            ease: "expo.inOut"
+        }, "+=0.2")
+        .from(".hero-elem", {
+            y: 50,
+            opacity: 0,
+            duration: 1.5,
+            stagger: 0.2,
+            ease: "expo.out",
+        }, "-=0.5"); // Menggantikan animasi hero asal yang tiada preloader
+
+        // --- ELEMEN SHOW-OFF 2: MAGNETIC BUTTON ---
+        const magWrap = document.querySelector('.magnetic-wrap');
+        const magBtn = document.querySelector('.magnetic-btn');
+        
+        if (magWrap && magBtn) {
+            magWrap.addEventListener('mousemove', (e) => {
+                const rect = magWrap.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
+                const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
+                gsap.to(magBtn, { x: x, y: y, duration: 0.3 });
+            });
+            magWrap.addEventListener('mouseleave', () => {
+                gsap.to(magBtn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+            });
+        }
+
+        // --- ELEMEN SHOW-OFF 3: PORTFOLIO HOVER REVEAL ---
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        const hoverImg = document.getElementById('portfolio-hover-img');
+        const portfolioSection = document.getElementById('portfolio-section');
+        
+        let imgX = 0, imgY = 0;
+        
+        if (portfolioSection) {
+            portfolioSection.addEventListener('mousemove', (e) => {
+                imgX = e.clientX;
+                imgY = e.clientY;
+                gsap.to(hoverImg, { x: imgX, y: imgY, duration: 0.4, ease: "power2.out" });
+            });
+
+            portfolioItems.forEach(item => {
+                item.addEventListener('mouseenter', (e) => {
+                    const imgUrl = item.getAttribute('data-image');
+                    hoverImg.style.backgroundImage = `url(${imgUrl})`;
+                    gsap.to(hoverImg, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.5)" });
+                    if(cursorRing) cursorRing.style.opacity = '0'; // Sembunyikan ring kursor
+                });
+                item.addEventListener('mouseleave', () => {
+                    gsap.to(hoverImg, { opacity: 0, scale: 0.8, duration: 0.3 });
+                    if(cursorRing) cursorRing.style.opacity = '1';
+                });
+            });
+        }
+
+        // --- ELEMEN SHOW-OFF 4: STATS COUNTER ---
+        const statCounters = document.querySelectorAll('.stat-counter');
+        
+        statCounters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            ScrollTrigger.create({
+                trigger: "#stats-section",
+                start: "top 80%",
+                once: true,
+                onEnter: () => {
+                    gsap.to(counter, {
+                        innerHTML: target,
+                        duration: 2.5,
+                        snap: { innerHTML: 1 },
+                        ease: "power3.out"
+                    });
+                }
+            });
+        });
+
+        // B. Text Reveal (Scrub Effect)
+        const scrubTextEl = document.getElementById("scrub-text");
+        const words = scrubTextEl.innerText.split(" ");
+        scrubTextEl.innerHTML = "";
+        
+        words.forEach(word => {
+            const span = document.createElement("span");
+            span.innerText = word + " ";
+            span.style.opacity = "0.2"; // Opacity asal
+            span.style.transition = "color 0.3s";
+            scrubTextEl.appendChild(span);
+        });
+
+        gsap.to(scrubTextEl.children, {
+            opacity: 1,
+            color: "#FFFFFF",
+            stagger: 0.1,
+            ease: "none",
+            scrollTrigger: {
+                trigger: scrubTextEl,
+                start: "top 80%",
+                end: "bottom 40%",
+                scrub: true, // Ditukar ke 'true' supaya tiada delay berlapis dengan Lenis
+            }
+        });
+
+        // C. Horizontal Scroll Section (Pinned)
+        const horizontalSection = document.getElementById("horizontal-section");
+        const track = document.querySelector(".horizontal-track");
+
+        function getScrollAmount() {
+            let trackWidth = track.scrollWidth;
+            return -(trackWidth - window.innerWidth + 48); // Dikemaskini padding
+        }
+
+        const tween = gsap.to(track, {
+            x: getScrollAmount,
+            ease: "none"
+        });
+
+        ScrollTrigger.create({
+            trigger: horizontalSection,
+            start: "top top",
+            end: () => `+=${Math.abs(getScrollAmount())}`, // Fix: Koordinat skrol sekarang lebih selari dengan jarak animasi mendatar
+            pin: true,
+            animation: tween,
+            scrub: true, // Ditukar ke 'true' untuk respon skrol masa nyata tanpa sangkut
+            invalidateOnRefresh: true
+        });
+
+        // D. Footer Parallax Zoom
+        gsap.from("#footer-cta", {
+            scale: 0.8,
+            opacity: 0,
+            scrollTrigger: {
+                trigger: "footer",
+                start: "top bottom",
+                end: "center center",
+                scrub: 1
+            }
+        });
+    </script>
 </body>
 </html>
